@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>RBLX Scripts Selector</title>
+<style>
+  body {
+    background-color: #121212;
+    color: #eee;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0; padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  h1 {
+    color: #4da6ff;
+    user-select: none;
+  }
+  .buttons {
+    display: flex;
+    gap: 4rem;
+    margin: 2rem 0;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  button.main-btn {
+    background-color: #4da6ff;
+    border: none;
+    padding: 1rem 2.5rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 700;
+    color: #121212;
+    font-size: 1.2rem;
+    user-select: none;
+    transition: background-color 0.3s ease;
+  }
+  button.main-btn:hover {
+    background-color: #3a91cc;
+  }
+  .script-details, .emergency-options, .grow-options {
+    max-width: 800px;
+    background: #1e1e1e;
+    padding: 1.5rem 2rem;
+    border-radius: 8px;
+    box-shadow: 0 0 12px #000;
+    font-family: "Courier New", Courier, monospace;
+    font-size: 1.1rem;
+    white-space: pre-wrap;
+    user-select: text;
+    position: relative;
+    margin-top: 1.5rem;
+    display: none;
+  }
+  .copy-btn {
+    background: #4da6ff;
+    border: none;
+    color: #121212;
+    font-weight: 700;
+    padding: 0.3rem 0.7rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    user-select: none;
+    transition: background-color 0.3s ease;
+    margin-left: 1rem;
+  }
+  .copy-btn:hover {
+    background-color: #3a91cc;
+  }
+  .script-title {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: #4da6ff;
+  }
+  .option-buttons button {
+    background-color: #2a2a2a;
+    color: #4da6ff;
+    border: 1px solid #4da6ff;
+    padding: 0.5rem 1rem;
+    margin-right: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 1rem;
+    user-select: none;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  .option-buttons button:hover {
+    background-color: #4da6ff;
+    color: #121212;
+  }
+</style>
+</head>
+<body>
+
+  <h1>Choose Your Script</h1>
+  <div class="buttons">
+    <button class="main-btn" id="btnBloxFruits" data-name="Blox Fruits" data-code="loadstring(game:HttpGet('https://raw.githubusercontent.com/pid4k/scripts/main/BloxFruits.lua'))()">Blox Fruits</button>
+    <button class="main-btn" id="btnGrowGarden">Grow a Garden</button>
+    <button class="main-btn" id="btnEmergencyHamburg">Emergency Hamburg</button>
+  </div>
+
+  <!-- تفاصيل سكربت مفرد -->
+  <div class="script-details" id="scriptDetails">
+    <div class="script-title" id="scriptTitle"></div>
+    <button class="copy-btn" id="copyBtn">Copy</button>
+    <pre id="scriptCode"></pre>
+  </div>
+
+  <!-- خيارات Emergency Hamburg -->
+  <div class="emergency-options option-buttons" id="emergencyOptions">
+    <button data-name="BeanzHub" data-code="loadstring(game:HttpGet('https://raw.githubusercontent.com/pid4k/scripts/main/BeanzHub.lua'))()">BeanzHub</button>
+    <button data-name="Nexar" data-code='loadstring(game:HttpGet("https://techhub.group/scripts/loader"))()'>Nexar</button>
+    <button data-name="Nexar Auto rob" data-code='loadstring(game:HttpGet("https://techhub.group/scripts/nexarehautorob"))()'>Nexar Auto rob</button>
+  </div>
+
+  <!-- خيارات Grow a Garden -->
+  <div class="grow-options option-buttons" id="growOptions">
+    <button data-name="Grow a Garden 1" data-code='loadstring(game:HttpGet("https://raw.githubusercontent.com/thatsepical/petspawner/refs/heads/main/growagarden.lua"))()'>Grow a Garden 1</button>
+    <button data-name="Grow a Garden 2" data-code='loadstring(game:HttpGet("https://raw.githubusercontent.com/NeroHubClub/NeroPET-SEEDspawner/refs/heads/main/v2.5"))()'>Grow a Garden 2</button>
+    <button data-name="Grow a Garden 3" data-code='loadstring(game:HttpGet("https://raw.githubusercontent.com/NakyumiZy/NoLag/refs/heads/main/GrowAGardenScriptHub"))()'>Grow a Garden 3</button>
+  </div>
+
+<script>
+  const mainButtons = document.querySelectorAll('.main-btn');
+  const scriptDetails = document.getElementById('scriptDetails');
+  const emergencyOptions = document.getElementById('emergencyOptions');
+  const growOptions = document.getElementById('growOptions');
+  const scriptTitle = document.getElementById('scriptTitle');
+  const scriptCode = document.getElementById('scriptCode');
+  const copyBtn = document.getElementById('copyBtn');
+
+  function hideAll() {
+    scriptDetails.style.display = 'none';
+    emergencyOptions.style.display = 'none';
+    growOptions.style.display = 'none';
+  }
+
+  mainButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      if (btn.id === 'btnEmergencyHamburg') {
+        hideAll();
+        emergencyOptions.style.display = 'block';
+        emergencyOptions.scrollIntoView({behavior: 'smooth'});
+      } else if (btn.id === 'btnGrowGarden') {
+        hideAll();
+        growOptions.style.display = 'block';
+        growOptions.scrollIntoView({behavior: 'smooth'});
+      } else {
+        hideAll();
+        const name = btn.getAttribute('data-name');
+        const code = btn.getAttribute('data-code');
+        scriptTitle.textContent = name;
+        scriptCode.textContent = code;
+        scriptDetails.style.display = 'block';
+        copyBtn.textContent = 'Copy';
+        scriptDetails.scrollIntoView({behavior: 'smooth'});
+      }
+    });
+  });
+
+  // خيارات Emergency Hamburg
+  emergencyOptions.querySelectorAll('button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const name = btn.getAttribute('data-name');
+      const code = btn.getAttribute('data-code');
+      scriptTitle.textContent = name;
+      scriptCode.textContent = code;
+      scriptDetails.style.display = 'block';
+      copyBtn.textContent = 'Copy';
+      scriptDetails.scrollIntoView({behavior: 'smooth'});
+    });
+  });
+
+  // خيارات Grow a Garden
+  growOptions.querySelectorAll('button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const name = btn.getAttribute('data-name');
+      const code = btn.getAttribute('data-code');
+      scriptTitle.textContent = name;
+      scriptCode.textContent = code;
+      scriptDetails.style.display = 'block';
+      copyBtn.textContent = 'Copy';
+      scriptDetails.scrollIntoView({behavior: 'smooth'});
+    });
+  });
+
+  // زر النسخ
+  copyBtn.addEventListener('click', () => {
+    navigator.clipboard.writeText(scriptCode.textContent).then(() => {
+      copyBtn.textContent = 'Copied!';
+      setTimeout(() => copyBtn.textContent = 'Copy', 1500);
+    }).catch(() => {
+      alert('Failed to copy. Please copy manually.');
+    });
+  });
+
+  // بداية الصفحة: اخفي كل شيء
+  hideAll();
+</script>
+
+</body>
+</html>
