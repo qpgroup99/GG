@@ -3,20 +3,23 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>RBLX Script Hub</title>
+<title>RBLX Magic Script Hub</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
 <style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap');
+  
   :root {
-    --primary: #5865F2;
-    --primary-dark: #4752C4;
-    --secondary: #57F287;
-    --background: #121212;
-    --card-bg: #1E1E1E;
+    --primary: #FF6EC7;
+    --primary-dark: #D45FA8;
+    --secondary: #6EE2FF;
+    --accent: #FFE66E;
+    --background: #0F0A1E;
+    --card-bg: rgba(30, 20, 50, 0.7);
     --text: #FFFFFF;
-    --text-secondary: #B3B3B3;
-    --accent: #ED4245;
+    --text-secondary: #CBB8FF;
+    --shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
   }
   
   * {
@@ -26,59 +29,125 @@
   }
   
   body {
-    background-color: var(--background);
+    background: radial-gradient(circle at center, #1E1035, #0F0A1E);
     color: var(--text);
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Poppins', sans-serif;
     line-height: 1.6;
-    padding: 0;
-    margin: 0;
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+  }
+  
+  body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+      radial-gradient(circle at 20% 30%, rgba(110, 226, 255, 0.15) 0%, transparent 20%),
+      radial-gradient(circle at 80% 70%, rgba(255, 110, 199, 0.15) 0%, transparent 20%),
+      radial-gradient(circle at 40% 80%, rgba(255, 230, 110, 0.15) 0%, transparent 20%);
+    pointer-events: none;
+    z-index: -1;
+  }
+  
+  .floating-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(20px);
+    opacity: 0.7;
+    z-index: -1;
+    animation: float 15s infinite ease-in-out;
+  }
+  
+  @keyframes float {
+    0%, 100% { transform: translateY(0) translateX(0); }
+    50% { transform: translateY(-20px) translateX(10px); }
   }
   
   header {
-    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-    padding: 2rem 1rem;
+    background: linear-gradient(135deg, var(--primary), #9D4EDD);
+    padding: 3rem 1rem;
     text-align: center;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    box-shadow: var(--shadow);
+    position: relative;
+    overflow: hidden;
+    border-bottom: 2px solid var(--secondary);
+  }
+  
+  header::after {
+    content: "";
+    position: absolute;
+    bottom: -50px;
+    left: 0;
+    width: 100%;
+    height: 50px;
+    background: linear-gradient(to bottom, rgba(157, 78, 221, 0.5), transparent);
+    z-index: -1;
   }
   
   .container {
-    max-width: 1200px;
+    max-width: 1400px;
     margin: 0 auto;
     padding: 2rem 1rem;
+    position: relative;
   }
   
   h1 {
-    font-size: 2.5rem;
+    font-size: 3.5rem;
     margin-bottom: 0.5rem;
+    background: linear-gradient(to right, #FF6EC7, #6EE2FF);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    font-weight: 800;
+    letter-spacing: 1px;
   }
   
   .subtitle {
-    color: rgba(255, 255, 255, 0.8);
-    font-size: 1.1rem;
+    color: var(--text-secondary);
+    font-size: 1.3rem;
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+    font-weight: 300;
   }
   
   .search-container {
-    margin: 2rem auto;
-    max-width: 600px;
+    margin: 3rem auto;
+    max-width: 700px;
+    position: relative;
+    z-index: 2;
   }
   
   #searchInput {
     width: 100%;
-    padding: 1rem;
+    padding: 1.2rem 1.2rem 1.2rem 4rem;
     border-radius: 50px;
     border: none;
-    background-color: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
     color: white;
-    font-size: 1rem;
-    padding-left: 3rem;
+    font-size: 1.1rem;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+  }
+  
+  #searchInput:focus {
+    outline: none;
+    box-shadow: 0 5px 20px rgba(110, 226, 255, 0.3);
+    border: 1px solid var(--secondary);
   }
   
   .search-icon {
     position: absolute;
-    left: 1rem;
+    left: 1.5rem;
     top: 50%;
     transform: translateY(-50%);
     color: var(--text-secondary);
+    font-size: 1.2rem;
   }
   
   .search-wrapper {
@@ -87,123 +156,288 @@
   
   .categories {
     display: flex;
-    gap: 1rem;
-    margin: 2rem 0;
+    gap: 1.5rem;
+    margin: 3rem 0;
     flex-wrap: wrap;
     justify-content: center;
+    position: relative;
+    z-index: 2;
   }
   
   .category-btn {
-    background-color: var(--card-bg);
+    background: rgba(30, 20, 50, 0.6);
     border: none;
-    padding: 0.8rem 1.5rem;
+    padding: 1rem 2rem;
     border-radius: 50px;
     cursor: pointer;
     font-weight: 600;
     color: var(--text);
     transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    z-index: 1;
+  }
+  
+  .category-btn::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, var(--primary), var(--secondary));
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.3s ease;
   }
   
   .category-btn:hover, .category-btn.active {
-    background-color: var(--primary);
     color: white;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(110, 226, 255, 0.3);
+  }
+  
+  .category-btn:hover::before, .category-btn.active::before {
+    opacity: 0.3;
+  }
+  
+  .category-btn.active {
+    background: rgba(110, 226, 255, 0.2);
+    border: 1px solid var(--secondary);
+  }
+  
+  /* Floating objects above category buttons */
+  .category-btn::after {
+    content: "";
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    background: var(--accent);
+    border-radius: 50%;
+    top: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    filter: drop-shadow(0 5px 10px rgba(255, 230, 110, 0.5));
+    opacity: 0;
+    transition: all 0.3s ease;
+  }
+  
+  .category-btn:hover::after {
+    opacity: 1;
+    animation: float-up 3s infinite ease-in-out;
+  }
+  
+  @keyframes float-up {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(-10px); }
+  }
+  
+  /* Unique floating objects for each category */
+  .category-btn[data-category="all"]::after {
+    content: "✨";
+    background: transparent;
+    font-size: 1.5rem;
+    line-height: 30px;
+  }
+  
+  .category-btn[data-category="blox-fruits"]::after {
+    content: "🍊";
+    background: transparent;
+    font-size: 1.5rem;
+    line-height: 30px;
+  }
+  
+  .category-btn[data-category="garden"]::after {
+    content: "🌻";
+    background: transparent;
+    font-size: 1.5rem;
+    line-height: 30px;
+  }
+  
+  .category-btn[data-category="emergency"]::after {
+    content: "🚨";
+    background: transparent;
+    font-size: 1.5rem;
+    line-height: 30px;
+  }
+  
+  .category-btn[data-category="popular"]::after {
+    content: "🔥";
+    background: transparent;
+    font-size: 1.5rem;
+    line-height: 30px;
+  }
+  
+  .category-btn[data-category="new"]::after {
+    content: "🆕";
+    background: transparent;
+    font-size: 1.5rem;
+    line-height: 30px;
   }
   
   .scripts-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 1.5rem;
-    margin-top: 2rem;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+    position: relative;
+    z-index: 2;
   }
   
   .script-card {
-    background-color: var(--card-bg);
-    border-radius: 10px;
+    background: var(--card-bg);
+    border-radius: 20px;
     overflow: hidden;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    transition: transform 0.3s ease;
+    box-shadow: var(--shadow);
+    transition: all 0.3s ease;
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+    z-index: 1;
+  }
+  
+  .script-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, rgba(255,110,199,0.1), rgba(110,226,255,0.1));
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.3s ease;
   }
   
   .script-card:hover {
-    transform: translateY(-5px);
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 15px 35px rgba(110, 226, 255, 0.2);
+  }
+  
+  .script-card:hover::before {
+    opacity: 1;
   }
   
   .card-header {
-    padding: 1.5rem;
-    background-color: rgba(0, 0, 0, 0.2);
+    padding: 1.8rem;
+    background: rgba(0, 0, 0, 0.3);
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .card-header::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(to right, var(--primary), var(--secondary));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease;
+  }
+  
+  .script-card:hover .card-header::after {
+    transform: scaleX(1);
   }
   
   .card-title {
-    font-size: 1.3rem;
+    font-size: 1.5rem;
     margin-bottom: 0.5rem;
+    background: linear-gradient(to right, var(--primary), var(--secondary));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-weight: 700;
   }
   
   .card-game {
     color: var(--text-secondary);
-    font-size: 0.9rem;
+    font-size: 1rem;
+    font-weight: 300;
   }
   
   .card-body {
-    padding: 1.5rem;
+    padding: 1.8rem;
   }
   
   .card-description {
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.8rem;
     color: var(--text-secondary);
+    font-weight: 300;
+    line-height: 1.7;
   }
   
   .card-footer {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 1.5rem 1.5rem;
-  }
-  
-  .copy-btn {
-    background-color: var(--primary);
-    color: white;
-    border: none;
-    padding: 0.7rem 1.5rem;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: 600;
-    transition: background-color 0.3s ease;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-  
-  .copy-btn:hover {
-    background-color: var(--primary-dark);
-  }
-  
-  .copy-btn.copied {
-    background-color: var(--secondary);
-  }
-  
-  .download-btn {
-    background-color: var(--accent);
-    color: white;
-    border: none;
-    padding: 0.7rem 1.5rem;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: 600;
-    transition: background-color 0.3s ease;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    margin-left: 0.5rem;
-  }
-  
-  .download-btn:hover {
-    background-color: #D13235;
+    padding: 0 1.8rem 1.8rem;
   }
   
   .last-updated {
-    font-size: 0.8rem;
+    font-size: 0.9rem;
     color: var(--text-secondary);
+    font-weight: 300;
+  }
+  
+  .card-actions {
+    display: flex;
+    gap: 0.8rem;
+  }
+  
+  .copy-btn, .download-btn {
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .copy-btn {
+    background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+    color: white;
+  }
+  
+  .download-btn {
+    background: linear-gradient(45deg, var(--accent), #FFC04D);
+    color: #121212;
+  }
+  
+  .copy-btn::before, .download-btn::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, rgba(255,255,255,0.2), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+  }
+  
+  .copy-btn:hover, .download-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  }
+  
+  .copy-btn:hover::before, .download-btn:hover::before {
+    transform: translateX(0);
+  }
+  
+  .copy-btn.copied {
+    background: linear-gradient(45deg, var(--secondary), #4DC8FF);
   }
   
   .modal {
@@ -220,6 +454,7 @@
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.3s ease;
+    backdrop-filter: blur(5px);
   }
   
   .modal.active {
@@ -228,111 +463,234 @@
   }
   
   .modal-content {
-    background-color: var(--card-bg);
-    border-radius: 10px;
+    background: var(--card-bg);
+    border-radius: 20px;
     width: 90%;
-    max-width: 800px;
+    max-width: 900px;
     max-height: 80vh;
     overflow-y: auto;
     position: relative;
+    box-shadow: var(--shadow);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    animation: modalAppear 0.5s ease forwards;
+  }
+  
+  @keyframes modalAppear {
+    from { transform: translateY(50px) scale(0.9); opacity: 0; }
+    to { transform: translateY(0) scale(1); opacity: 1; }
   }
   
   .modal-header {
-    padding: 1.5rem;
+    padding: 1.8rem;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     display: flex;
     justify-content: space-between;
     align-items: center;
+    background: linear-gradient(45deg, rgba(255,110,199,0.1), rgba(110,226,255,0.1));
+  }
+  
+  .modal-title {
+    font-size: 1.8rem;
+    background: linear-gradient(to right, var(--primary), var(--secondary));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-weight: 700;
   }
   
   .modal-close {
     background: none;
     border: none;
     color: var(--text-secondary);
-    font-size: 1.5rem;
+    font-size: 1.8rem;
     cursor: pointer;
+    transition: transform 0.3s ease;
+  }
+  
+  .modal-close:hover {
+    transform: rotate(90deg);
+    color: var(--secondary);
   }
   
   .modal-body {
-    padding: 1.5rem;
+    padding: 1.8rem;
   }
   
   .script-code {
-    background-color: rgba(0, 0, 0, 0.3);
-    padding: 1rem;
-    border-radius: 5px;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 1.5rem;
+    border-radius: 10px;
     font-family: 'Courier New', monospace;
     white-space: pre-wrap;
     word-break: break-all;
     overflow-x: auto;
+    margin: 1.5rem 0;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+  }
+  
+  .script-code::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 3px;
+    height: 100%;
+    background: linear-gradient(to bottom, var(--primary), var(--secondary));
   }
   
   .features-list {
-    margin: 1rem 0;
-    padding-left: 1.5rem;
+    margin: 1.5rem 0;
+    padding-left: 1.8rem;
+    list-style-type: none;
   }
   
   .features-list li {
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.8rem;
+    position: relative;
+    padding-left: 1.5rem;
+  }
+  
+  .features-list li::before {
+    content: "✦";
+    position: absolute;
+    left: 0;
+    color: var(--secondary);
   }
   
   .modal-actions {
     display: flex;
     gap: 1rem;
-    margin-top: 1.5rem;
+    margin-top: 1.8rem;
+    flex-wrap: wrap;
   }
   
   .footer {
     text-align: center;
-    padding: 2rem;
-    background-color: rgba(0, 0, 0, 0.3);
+    padding: 3rem;
+    background: rgba(0, 0, 0, 0.3);
     margin-top: 3rem;
+    position: relative;
+    z-index: 2;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  .footer p {
+    margin-bottom: 0.5rem;
+    color: var(--text-secondary);
+    font-weight: 300;
   }
   
   .stats {
     display: flex;
     justify-content: space-around;
-    margin: 2rem 0;
+    margin: 3rem 0;
     flex-wrap: wrap;
+    gap: 1.5rem;
   }
   
   .stat-item {
     text-align: center;
-    padding: 1rem;
+    padding: 1.5rem;
+    background: rgba(30, 20, 50, 0.5);
+    border-radius: 15px;
+    min-width: 200px;
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: transform 0.3s ease;
+  }
+  
+  .stat-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(110, 226, 255, 0.2);
   }
   
   .stat-number {
-    font-size: 2.5rem;
+    font-size: 2.8rem;
     font-weight: bold;
-    color: var(--primary);
+    background: linear-gradient(to right, var(--primary), var(--secondary));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    margin-bottom: 0.5rem;
   }
   
   .stat-label {
     color: var(--text-secondary);
-    font-size: 0.9rem;
+    font-size: 1rem;
+    font-weight: 300;
   }
   
+  /* Floating objects in background */
+  .floating-object {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(45deg, var(--primary), var(--secondary));
+    border-radius: 50%;
+    filter: blur(10px);
+    opacity: 0.5;
+    z-index: -1;
+    animation: float-around 20s infinite linear;
+  }
+  
+  @keyframes float-around {
+    0% { transform: translate(0, 0) rotate(0deg); }
+    25% { transform: translate(50px, -30px) rotate(90deg); }
+    50% { transform: translate(100px, 0) rotate(180deg); }
+    75% { transform: translate(50px, 30px) rotate(270deg); }
+    100% { transform: translate(0, 0) rotate(360deg); }
+  }
+  
+  /* Responsive adjustments */
   @media (max-width: 768px) {
+    h1 {
+      font-size: 2.5rem;
+    }
+    
+    .subtitle {
+      font-size: 1.1rem;
+    }
+    
     .scripts-grid {
       grid-template-columns: 1fr;
     }
     
-    h1 {
-      font-size: 2rem;
+    .categories {
+      gap: 1rem;
+    }
+    
+    .category-btn {
+      padding: 0.8rem 1.5rem;
     }
     
     .modal-actions {
       flex-direction: column;
+    }
+    
+    .stat-item {
+      min-width: 150px;
     }
   }
 </style>
 </head>
 <body>
 
+<!-- Floating background objects -->
+<div class="floating-orb" style="width: 300px; height: 300px; background: radial-gradient(circle, rgba(255,110,199,0.3), transparent 70%); top: -100px; left: -100px; animation-delay: 0s;"></div>
+<div class="floating-orb" style="width: 200px; height: 200px; background: radial-gradient(circle, rgba(110,226,255,0.3), transparent 70%); bottom: -50px; right: -50px; animation-delay: 2s;"></div>
+<div class="floating-orb" style="width: 150px; height: 150px; background: radial-gradient(circle, rgba(255,230,110,0.3), transparent 70%); top: 30%; right: 10%; animation-delay: 4s;"></div>
+
+<!-- Random floating objects -->
+<div class="floating-object" style="top: 20%; left: 10%; animation-delay: 0s; width: 20px; height: 20px;"></div>
+<div class="floating-object" style="top: 70%; left: 80%; animation-delay: 3s; width: 30px; height: 30px;"></div>
+<div class="floating-object" style="top: 40%; left: 60%; animation-delay: 6s; width: 25px; height: 25px;"></div>
+<div class="floating-object" style="top: 60%; left: 20%; animation-delay: 9s; width: 15px; height: 15px;"></div>
+
 <header>
   <div class="container">
-    <h1>RBLX Script Hub</h1>
-    <p class="subtitle">Premium Roblox scripts for your favorite games</p>
+    <h1>RBLX Magic Script Hub</h1>
+    <p class="subtitle">Where imagination meets automation in the Roblox universe</p>
   </div>
 </header>
 
@@ -340,7 +698,7 @@
   <div class="search-container">
     <div class="search-wrapper">
       <i class="fas fa-search search-icon"></i>
-      <input type="text" id="searchInput" placeholder="Search scripts...">
+      <input type="text" id="searchInput" placeholder="Search magical scripts...">
     </div>
   </div>
   
@@ -376,22 +734,22 @@
 <div class="modal" id="scriptModal">
   <div class="modal-content">
     <div class="modal-header">
-      <h2 id="modalTitle">Script Details</h2>
+      <h2 class="modal-title" id="modalTitle">Script Details</h2>
       <button class="modal-close" id="modalClose">&times;</button>
     </div>
     <div class="modal-body">
-      <h3>Features:</h3>
+      <h3>Magical Features:</h3>
       <ul class="features-list" id="modalFeatures">
         <!-- Features will be inserted here -->
       </ul>
-      <h3>Script Code:</h3>
+      <h3>Enchanted Script Code:</h3>
       <div class="script-code" id="modalCode"></div>
       <div class="modal-actions">
         <button class="copy-btn" id="modalCopyBtn">
-          <i class="fas fa-copy"></i> Copy Script
+          <i class="fas fa-copy"></i> Copy Spell
         </button>
         <button class="download-btn" id="modalDownloadBtn">
-          <i class="fas fa-file-archive"></i> Download as ZIP
+          <i class="fas fa-file-archive"></i> Download Scroll
         </button>
       </div>
     </div>
@@ -399,8 +757,8 @@
 </div>
 
 <footer class="footer">
-  <p>© 2023 RBLX Script Hub | All scripts are provided as-is</p>
-  <p>Contact: admin@rblxscripthub.com</p>
+  <p>© 2023 RBLX Magic Script Hub | All spells are provided as-is</p>
+  <p>Contact: wizard@rblxmagichub.com</p>
 </footer>
 
 <script>
@@ -408,97 +766,97 @@
   const scripts = [
     {
       id: 1,
-      title: "Blox Fruits Ultimate",
+      title: "Blox Fruits Enchantment",
       game: "Blox Fruits",
-      description: "The most complete Blox Fruits script with auto farm, auto buy, and more.",
+      description: "The most powerful Blox Fruits script with auto farm, teleportation, and mystical ESP abilities.",
       code: "loadstring(game:HttpGet('https://raw.githubusercontent.com/pid4k/scripts/main/BloxFruits.lua'))()",
       category: ["blox-fruits", "popular"],
       features: [
-        "Auto farm all fruits",
-        "Auto buy abilities",
-        "Teleport to islands",
-        "Auto collect chests",
-        "Player ESP"
+        "Auto farm all mystical fruits",
+        "Teleport between enchanted islands",
+        "See hidden players with wizard ESP",
+        "Auto collect magical chests",
+        "Summon abilities instantly"
       ],
       lastUpdated: "2023-06-15"
     },
     {
       id: 2,
-      title: "Grow Garden Pro",
+      title: "Garden Alchemy Pro",
       game: "Grow a Garden",
-      description: "Advanced garden growing script with auto plant, harvest, and sell features.",
+      description: "Magical garden growing script that transforms seeds into gold with alchemical precision.",
       code: "loadstring(game:HttpGet('https://raw.githubusercontent.com/thatsepical/petspawner/refs/heads/main/growagarden.lua'))()",
       category: ["garden", "new"],
       features: [
-        "Auto plant seeds",
-        "Auto harvest plants",
-        "Auto sell items",
-        "Optimized pathfinding",
-        "Anti-afk system"
+        "Auto-plant enchanted seeds",
+        "Harvest with fairy helpers",
+        "Alchemical selling system",
+        "Magical pathfinding",
+        "Potion-based anti-afk"
       ],
       lastUpdated: "2023-06-10"
     },
     {
       id: 3,
-      title: "Emergency Hamburg VIP",
+      title: "Hamburg Sorcery VIP",
       game: "Emergency Hamburg",
-      description: "Complete script for Emergency Hamburg with auto rob and money features.",
+      description: "Arcane script for Emergency Hamburg with invisibility spells and money conjuring.",
       code: "loadstring(game:HttpGet('https://raw.githubusercontent.com/pid4k/scripts/main/BeanzHub.lua'))()",
       category: ["emergency", "popular"],
       features: [
-        "Auto rob all stores",
-        "Money drop bypass",
-        "Player teleport",
-        "Vehicle spawner",
-        "Police bypass"
+        "Invisibility cloak for robbing",
+        "Money duplication spells",
+        "Teleportation between locations",
+        "Summon magical vehicles",
+        "Police confusion hex"
       ],
       lastUpdated: "2023-06-12"
     },
     {
       id: 4,
-      title: "Nexar Auto Rob",
+      title: "Nexar Wizardry",
       game: "Emergency Hamburg",
-      description: "Specialized auto rob script for Emergency Hamburg with smart targeting.",
+      description: "Sorcerer-approved auto rob script with crystal ball targeting system.",
       code: 'loadstring(game:HttpGet("https://techhub.group/scripts/nexarehautorob"))()',
       category: ["emergency"],
       features: [
-        "Smart store targeting",
-        "Police detection",
-        "Escape routes",
-        "Money bag optimization",
-        "Low detection risk"
+        "Crystal ball store targeting",
+        "Wizard ESP for police",
+        "Magical escape portals",
+        "Bag of holding optimization",
+        "Low detection spells"
       ],
       lastUpdated: "2023-06-05"
     },
     {
       id: 5,
-      title: "Blox Fruits ESP",
+      title: "Blox Fruits Clairvoyance",
       game: "Blox Fruits",
-      description: "ESP and teleport script for Blox Fruits with player and fruit tracking.",
+      description: "See the unseen with this mystical ESP and teleportation script for Blox Fruits.",
       code: "loadstring(game:HttpGet('https://raw.githubusercontent.com/pid4k/scripts/main/BloxFruitsESP.lua'))()",
       category: ["blox-fruits"],
       features: [
-        "Player ESP",
-        "Fruit locations",
-        "Boss locations",
-        "Safe teleport",
-        "Customizable UI"
+        "Third eye player ESP",
+        "Fruit divination",
+        "Boss tracking spells",
+        "Safe teleportation circles",
+        "Customizable spellbook UI"
       ],
       lastUpdated: "2023-05-28"
     },
     {
       id: 6,
-      title: "Garden Multi-Box",
+      title: "Garden Multi-Dimension",
       game: "Grow a Garden",
-      description: "Advanced script for managing multiple gardens simultaneously.",
+      description: "Manage gardens across multiple dimensions with this powerful script.",
       code: 'loadstring(game:HttpGet("https://raw.githubusercontent.com/NeroHubClub/NeroPET-SEEDspawner/refs/heads/main/v2.5"))()',
       category: ["garden", "new"],
       features: [
-        "Multi-garden support",
-        "Seed optimizer",
-        "Profit calculator",
-        "Auto-replant",
-        "Growth tracker"
+        "Parallel garden management",
+        "Seed enchantment optimizer",
+        "Dimensional profit calculator",
+        "Auto-replanting spell",
+        "Growth prediction magic"
       ],
       lastUpdated: "2023-06-18"
     }
@@ -521,6 +879,36 @@
 
   // Current script being viewed in modal
   let currentScript = null;
+
+  // Create more floating objects dynamically
+  function createFloatingObjects() {
+    const container = document.body;
+    const count = 15;
+    
+    for (let i = 0; i < count; i++) {
+      const obj = document.createElement('div');
+      obj.className = 'floating-object';
+      
+      // Random properties
+      const size = Math.random() * 20 + 10;
+      const posX = Math.random() * 100;
+      const posY = Math.random() * 100;
+      const delay = Math.random() * 10;
+      const duration = Math.random() * 20 + 10;
+      const color = `hsl(${Math.random() * 360}, 70%, 60%)`;
+      
+      obj.style.width = `${size}px`;
+      obj.style.height = `${size}px`;
+      obj.style.top = `${posY}%`;
+      obj.style.left = `${posX}%`;
+      obj.style.animationDelay = `${delay}s`;
+      obj.style.animationDuration = `${duration}s`;
+      obj.style.background = color;
+      obj.style.opacity = Math.random() * 0.5 + 0.2;
+      
+      container.appendChild(obj);
+    }
+  }
 
   // Stats animation
   function animateStats() {
@@ -547,7 +935,7 @@
     scriptsContainer.innerHTML = '';
     
     if (scriptsToRender.length === 0) {
-      scriptsContainer.innerHTML = '<p style="grid-column: 1/-1; text-align: center;">No scripts found matching your criteria.</p>';
+      scriptsContainer.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--text-secondary);">No magical spells found matching your criteria.</p>';
       return;
     }
     
@@ -564,9 +952,9 @@
         </div>
         <div class="card-footer">
           <span class="last-updated">Updated: ${script.lastUpdated}</span>
-          <div>
+          <div class="card-actions">
             <button class="copy-btn" data-id="${script.id}">
-              <i class="fas fa-copy"></i> View Script
+              <i class="fas fa-scroll"></i> View Spell
             </button>
           </div>
         </div>
@@ -603,7 +991,7 @@
     });
     
     // Reset buttons
-    modalCopyBtn.innerHTML = '<i class="fas fa-copy"></i> Copy Script';
+    modalCopyBtn.innerHTML = '<i class="fas fa-copy"></i> Copy Spell';
     modalCopyBtn.classList.remove('copied');
     
     // Show modal
@@ -620,27 +1008,29 @@
     // Add script to ZIP
     zip.file(fileName, currentScript.code);
     
-    // Add a README file
+    // Add a magical README file
     const readmeContent = `
-      ${currentScript.title}
-      =================
+      ✨ ${currentScript.title} ✨
+      =================${'='.repeat(currentScript.title.length)}
       
-      Game: ${currentScript.game}
-      Last Updated: ${currentScript.lastUpdated}
+      🏰 Game: ${currentScript.game}
+      📅 Last Updated: ${currentScript.lastUpdated}
       
-      Features:
-      ${currentScript.features.map(f => `- ${f}`).join('\n')}
+      🔮 Features:
+      ${currentScript.features.map(f => `★ ${f}`).join('\n')}
       
-      Instructions:
-      1. Copy the script from ${fileName}
-      2. Paste into your preferred executor
-      3. Execute and enjoy!
+      📜 Instructions:
+      1. Copy the magical incantation from ${fileName}
+      2. Paste into your preferred spellbook (executor)
+      3. Cast the spell (execute) and watch the magic happen!
+      
+      ⚠️ Warning: Use responsibly, great power comes with great responsibility!
     `;
-    zip.file("README.txt", readmeContent);
+    zip.file("README.md", readmeContent);
     
     // Generate the ZIP file
     zip.generateAsync({type: "blob"}).then(function(content) {
-      saveAs(content, `${currentScript.title.replace(/\s+/g, '_')}_Script.zip`);
+      saveAs(content, `${currentScript.title.replace(/\s+/g, '_')}_Spellbook.zip`);
     });
   }
 
@@ -663,6 +1053,7 @@
 
   // Initialize
   function init() {
+    createFloatingObjects();
     renderScripts(scripts);
     animateStats();
     
@@ -687,10 +1078,10 @@
     // Modal copy button
     modalCopyBtn.addEventListener('click', () => {
       navigator.clipboard.writeText(modalCode.textContent).then(() => {
-        modalCopyBtn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+        modalCopyBtn.innerHTML = '<i class="fas fa-check"></i> Spell Copied!';
         modalCopyBtn.classList.add('copied');
         setTimeout(() => {
-          modalCopyBtn.innerHTML = '<i class="fas fa-copy"></i> Copy Script';
+          modalCopyBtn.innerHTML = '<i class="fas fa-copy"></i> Copy Spell';
           modalCopyBtn.classList.remove('copied');
         }, 2000);
       }).catch(err => {
