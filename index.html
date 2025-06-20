@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>RBLX Script Hub</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
 <style>
   :root {
     --primary: #5865F2;
@@ -180,6 +182,25 @@
     background-color: var(--secondary);
   }
   
+  .download-btn {
+    background-color: var(--accent);
+    color: white;
+    border: none;
+    padding: 0.7rem 1.5rem;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-left: 0.5rem;
+  }
+  
+  .download-btn:hover {
+    background-color: #D13235;
+  }
+  
   .last-updated {
     font-size: 0.8rem;
     color: var(--text-secondary);
@@ -255,6 +276,12 @@
     margin-bottom: 0.5rem;
   }
   
+  .modal-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+  
   .footer {
     text-align: center;
     padding: 2rem;
@@ -292,6 +319,10 @@
     
     h1 {
       font-size: 2rem;
+    }
+    
+    .modal-actions {
+      flex-direction: column;
     }
   }
 </style>
@@ -355,16 +386,21 @@
       </ul>
       <h3>Script Code:</h3>
       <div class="script-code" id="modalCode"></div>
-      <button class="copy-btn" id="modalCopyBtn">
-        <i class="fas fa-copy"></i> Copy Script
-      </button>
+      <div class="modal-actions">
+        <button class="copy-btn" id="modalCopyBtn">
+          <i class="fas fa-copy"></i> Copy Script
+        </button>
+        <button class="download-btn" id="modalDownloadBtn">
+          <i class="fas fa-file-archive"></i> Download as ZIP
+        </button>
+      </div>
     </div>
   </div>
 </div>
 
 <footer class="footer">
   <p>© 2023 RBLX Script Hub | All scripts are provided as-is</p>
-  <p>Contact: mohmadragheb90@gmail.com</p>
+  <p>Contact: admin@rblxscripthub.com</p>
 </footer>
 
 <script>
@@ -477,10 +513,14 @@
   const modalFeatures = document.getElementById('modalFeatures');
   const modalCode = document.getElementById('modalCode');
   const modalCopyBtn = document.getElementById('modalCopyBtn');
+  const modalDownloadBtn = document.getElementById('modalDownloadBtn');
   const modalClose = document.getElementById('modalClose');
   const totalScriptsEl = document.getElementById('totalScripts');
   const activeUsersEl = document.getElementById('activeUsers');
   const gamesSupportedEl = document.getElementById('gamesSupported');
+
+  // Current script being viewed in modal
+  let currentScript = null;
 
   // Stats animation
   function animateStats() {
@@ -524,9 +564,11 @@
         </div>
         <div class="card-footer">
           <span class="last-updated">Updated: ${script.lastUpdated}</span>
-          <button class="copy-btn" data-id="${script.id}">
-            <i class="fas fa-copy"></i> View Script
-          </button>
+          <div>
+            <button class="copy-btn" data-id="${script.id}">
+              <i class="fas fa-copy"></i> View Script
+            </button>
+          </div>
         </div>
       `;
       scriptsContainer.appendChild(card);
@@ -548,6 +590,7 @@
     const script = scripts.find(s => s.id === scriptId);
     if (!script) return;
     
+    currentScript = script;
     modalTitle.textContent = `${script.title} - ${script.game}`;
     modalCode.textContent = script.code;
     
@@ -559,12 +602,46 @@
       modalFeatures.appendChild(li);
     });
     
-    // Reset copy button
+    // Reset buttons
     modalCopyBtn.innerHTML = '<i class="fas fa-copy"></i> Copy Script';
     modalCopyBtn.classList.remove('copied');
     
     // Show modal
     scriptModal.classList.add('active');
+  }
+
+  // Create and download ZIP file
+  function downloadAsZip() {
+    if (!currentScript) return;
+    
+    const zip = new JSZip();
+    const fileName = `${currentScript.title.replace(/\s+/g, '_')}.lua`;
+    
+    // Add script to ZIP
+    zip.file(fileName, currentScript.code);
+    
+    // Add a README file
+    const readmeContent = `
+      ${currentScript.title}
+      =================
+      
+      Game: ${currentScript.game}
+      Last Updated: ${currentScript.lastUpdated}
+      
+      Features:
+      ${currentScript.features.map(f => `- ${f}`).join('\n')}
+      
+      Instructions:
+      1. Copy the script from ${fileName}
+      2. Paste into your preferred executor
+      3. Execute and enjoy!
+    `;
+    zip.file("README.txt", readmeContent);
+    
+    // Generate the ZIP file
+    zip.generateAsync({type: "blob"}).then(function(content) {
+      saveAs(content, `${currentScript.title.replace(/\s+/g, '_')}_Script.zip`);
+    });
   }
 
   // Filter scripts by category
@@ -620,6 +697,9 @@
         console.error('Failed to copy: ', err);
       });
     });
+    
+    // Modal download button
+    modalDownloadBtn.addEventListener('click', downloadAsZip);
     
     // Modal close
     modalClose.addEventListener('click', () => {
