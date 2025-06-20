@@ -1,219 +1,641 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><head>
-  <!-- كود جوجل أدسنس -->
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8364529487522017"
-     crossorigin="anonymous"></script>
-  <!-- باقي كود الصفحة -->
-</head>
+<head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>RBLX Scripts Selector</title>
+<title>RBLX Script Hub</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
-  body {<ins class="adsbygoogle"
-     style="display:block"
-     data-ad-client="ca-pub-8364529487522017"
-     data-ad-slot="1234567890"
-     data-ad-format="auto"
-     data-full-width-responsive="true"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
-
-    background-color: #121212;
-    color: #eee;
-    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-    margin: 0; padding: 2rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  :root {
+    --primary: #5865F2;
+    --primary-dark: #4752C4;
+    --secondary: #57F287;
+    --background: #121212;
+    --card-bg: #1E1E1E;
+    --text: #FFFFFF;
+    --text-secondary: #B3B3B3;
+    --accent: #ED4245;
   }
+  
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  
+  body {
+    background-color: var(--background);
+    color: var(--text);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    padding: 0;
+    margin: 0;
+  }
+  
+  header {
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    padding: 2rem 1rem;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  }
+  
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+  }
+  
   h1 {
-    color: #4da6ff;
-    user-select: none;
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
   }
-  .buttons {
+  
+  .subtitle {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 1.1rem;
+  }
+  
+  .search-container {
+    margin: 2rem auto;
+    max-width: 600px;
+  }
+  
+  #searchInput {
+    width: 100%;
+    padding: 1rem;
+    border-radius: 50px;
+    border: none;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+    font-size: 1rem;
+    padding-left: 3rem;
+  }
+  
+  .search-icon {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-secondary);
+  }
+  
+  .search-wrapper {
+    position: relative;
+  }
+  
+  .categories {
     display: flex;
-    gap: 4rem;
+    gap: 1rem;
     margin: 2rem 0;
     flex-wrap: wrap;
     justify-content: center;
   }
-  button.main-btn {
-    background-color: #4da6ff;
+  
+  .category-btn {
+    background-color: var(--card-bg);
     border: none;
-    padding: 1rem 2.5rem;
-    border-radius: 6px;
+    padding: 0.8rem 1.5rem;
+    border-radius: 50px;
     cursor: pointer;
-    font-weight: 700;
-    color: #121212;
-    font-size: 1.2rem;
-    user-select: none;
-    transition: background-color 0.3s ease;
+    font-weight: 600;
+    color: var(--text);
+    transition: all 0.3s ease;
   }
-  button.main-btn:hover {
-    background-color: #3a91cc;
+  
+  .category-btn:hover, .category-btn.active {
+    background-color: var(--primary);
+    color: white;
   }
-  .script-details, .emergency-options, .grow-options {
-    max-width: 800px;
-    background: #1e1e1e;
-    padding: 1.5rem 2rem;
-    border-radius: 8px;
-    box-shadow: 0 0 12px #000;
-    font-family: "Courier New", Courier, monospace;
-    font-size: 1.1rem;
-    white-space: pre-wrap;
-    user-select: text;
-    position: relative;
-    margin-top: 1.5rem;
-    display: none;
+  
+  .scripts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
   }
+  
+  .script-card {
+    background-color: var(--card-bg);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease;
+  }
+  
+  .script-card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .card-header {
+    padding: 1.5rem;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  .card-title {
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .card-game {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+  }
+  
+  .card-body {
+    padding: 1.5rem;
+  }
+  
+  .card-description {
+    margin-bottom: 1.5rem;
+    color: var(--text-secondary);
+  }
+  
+  .card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 1.5rem 1.5rem;
+  }
+  
   .copy-btn {
-    background: #4da6ff;
+    background-color: var(--primary);
+    color: white;
     border: none;
-    color: #121212;
-    font-weight: 700;
-    padding: 0.3rem 0.7rem;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 0.85rem;
-    user-select: none;
-    transition: background-color 0.3s ease;
-    margin-left: 1rem;
-  }
-  .copy-btn:hover {
-    background-color: #3a91cc;
-  }
-  .script-title {
-    font-size: 1.5rem;
-    margin-bottom: 1rem;
-    color: #4da6ff;
-  }
-  .option-buttons button {
-    background-color: #2a2a2a;
-    color: #4da6ff;
-    border: 1px solid #4da6ff;
-    padding: 0.5rem 1rem;
-    margin-right: 1rem;
+    padding: 0.7rem 1.5rem;
     border-radius: 5px;
     cursor: pointer;
-    font-weight: 700;
-    font-size: 1rem;
-    user-select: none;
-    transition: background-color 0.3s ease, color 0.3s ease;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
   }
-  .option-buttons button:hover {
-    background-color: #4da6ff;
-    color: #121212;
+  
+  .copy-btn:hover {
+    background-color: var(--primary-dark);
+  }
+  
+  .copy-btn.copied {
+    background-color: var(--secondary);
+  }
+  
+  .last-updated {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+  }
+  
+  .modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+  
+  .modal.active {
+    opacity: 1;
+    pointer-events: all;
+  }
+  
+  .modal-content {
+    background-color: var(--card-bg);
+    border-radius: 10px;
+    width: 90%;
+    max-width: 800px;
+    max-height: 80vh;
+    overflow-y: auto;
+    position: relative;
+  }
+  
+  .modal-header {
+    padding: 1.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .modal-close {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 1.5rem;
+    cursor: pointer;
+  }
+  
+  .modal-body {
+    padding: 1.5rem;
+  }
+  
+  .script-code {
+    background-color: rgba(0, 0, 0, 0.3);
+    padding: 1rem;
+    border-radius: 5px;
+    font-family: 'Courier New', monospace;
+    white-space: pre-wrap;
+    word-break: break-all;
+    overflow-x: auto;
+  }
+  
+  .features-list {
+    margin: 1rem 0;
+    padding-left: 1.5rem;
+  }
+  
+  .features-list li {
+    margin-bottom: 0.5rem;
+  }
+  
+  .footer {
+    text-align: center;
+    padding: 2rem;
+    background-color: rgba(0, 0, 0, 0.3);
+    margin-top: 3rem;
+  }
+  
+  .stats {
+    display: flex;
+    justify-content: space-around;
+    margin: 2rem 0;
+    flex-wrap: wrap;
+  }
+  
+  .stat-item {
+    text-align: center;
+    padding: 1rem;
+  }
+  
+  .stat-number {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: var(--primary);
+  }
+  
+  .stat-label {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+  }
+  
+  @media (max-width: 768px) {
+    .scripts-grid {
+      grid-template-columns: 1fr;
+    }
+    
+    h1 {
+      font-size: 2rem;
+    }
   }
 </style>
 </head>
 <body>
 
-  <h1>Choose Your Script</h1>
-  <div class="buttons">
-    <button class="main-btn" id="btnBloxFruits" data-name="Blox Fruits" data-code="loadstring(game:HttpGet('https://raw.githubusercontent.com/pid4k/scripts/main/BloxFruits.lua'))()">Blox Fruits</button>
-    <button class="main-btn" id="btnGrowGarden">Grow a Garden</button>
-    <button class="main-btn" id="btnEmergencyHamburg">Emergency Hamburg</button>
+<header>
+  <div class="container">
+    <h1>RBLX Script Hub</h1>
+    <p class="subtitle">Premium Roblox scripts for your favorite games</p>
   </div>
+</header>
 
-  <!-- تفاصيل سكربت مفرد -->
-  <div class="script-details" id="scriptDetails">
-    <div class="script-title" id="scriptTitle"></div>
-    <button class="copy-btn" id="copyBtn">Copy</button>
-    <pre id="scriptCode"></pre>
+<div class="container">
+  <div class="search-container">
+    <div class="search-wrapper">
+      <i class="fas fa-search search-icon"></i>
+      <input type="text" id="searchInput" placeholder="Search scripts...">
+    </div>
   </div>
+  
+  <div class="categories">
+    <button class="category-btn active" data-category="all">All Scripts</button>
+    <button class="category-btn" data-category="blox-fruits">Blox Fruits</button>
+    <button class="category-btn" data-category="garden">Grow a Garden</button>
+    <button class="category-btn" data-category="emergency">Emergency Hamburg</button>
+    <button class="category-btn" data-category="popular">Most Popular</button>
+    <button class="category-btn" data-category="new">Recently Added</button>
+  </div>
+  
+  <div class="stats">
+    <div class="stat-item">
+      <div class="stat-number" id="totalScripts">0</div>
+      <div class="stat-label">Total Scripts</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number" id="activeUsers">0</div>
+      <div class="stat-label">Daily Users</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number" id="gamesSupported">0</div>
+      <div class="stat-label">Games Supported</div>
+    </div>
+  </div>
+  
+  <div class="scripts-grid" id="scriptsContainer">
+    <!-- Script cards will be dynamically inserted here -->
+  </div>
+</div>
 
-  <!-- خيارات Emergency Hamburg -->
-  <div class="emergency-options option-buttons" id="emergencyOptions">
-    <button data-name="BeanzHub" data-code="loadstring(game:HttpGet('https://raw.githubusercontent.com/pid4k/scripts/main/BeanzHub.lua'))()">BeanzHub</button>
-    <button data-name="Nexar" data-code='loadstring(game:HttpGet("https://techhub.group/scripts/loader"))()'>Nexar</button>
-    <button data-name="Nexar Auto rob" data-code='loadstring(game:HttpGet("https://techhub.group/scripts/nexarehautorob"))()'>Nexar Auto rob</button>
+<div class="modal" id="scriptModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2 id="modalTitle">Script Details</h2>
+      <button class="modal-close" id="modalClose">&times;</button>
+    </div>
+    <div class="modal-body">
+      <h3>Features:</h3>
+      <ul class="features-list" id="modalFeatures">
+        <!-- Features will be inserted here -->
+      </ul>
+      <h3>Script Code:</h3>
+      <div class="script-code" id="modalCode"></div>
+      <button class="copy-btn" id="modalCopyBtn">
+        <i class="fas fa-copy"></i> Copy Script
+      </button>
+    </div>
   </div>
+</div>
 
-  <!-- خيارات Grow a Garden -->
-  <div class="grow-options option-buttons" id="growOptions">
-    <button data-name="Grow a Garden 1" data-code='loadstring(game:HttpGet("https://raw.githubusercontent.com/thatsepical/petspawner/refs/heads/main/growagarden.lua"))()'>Grow a Garden 1</button>
-    <button data-name="Grow a Garden 2" data-code='loadstring(game:HttpGet("https://raw.githubusercontent.com/NeroHubClub/NeroPET-SEEDspawner/refs/heads/main/v2.5"))()'>Grow a Garden 2</button>
-    <button data-name="Grow a Garden 3" data-code='loadstring(game:HttpGet("https://raw.githubusercontent.com/NakyumiZy/NoLag/refs/heads/main/GrowAGardenScriptHub"))()'>Grow a Garden 3</button>
-  </div>
+<footer class="footer">
+  <p>© 2023 RBLX Script Hub | All scripts are provided as-is</p>
+  <p>Contact: admin@rblxscripthub.com</p>
+</footer>
 
 <script>
-  const mainButtons = document.querySelectorAll('.main-btn');
-  const scriptDetails = document.getElementById('scriptDetails');
-  const emergencyOptions = document.getElementById('emergencyOptions');
-  const growOptions = document.getElementById('growOptions');
-  const scriptTitle = document.getElementById('scriptTitle');
-  const scriptCode = document.getElementById('scriptCode');
-  const copyBtn = document.getElementById('copyBtn');
+  // Sample script data - replace with your actual scripts
+  const scripts = [
+    {
+      id: 1,
+      title: "Blox Fruits Ultimate",
+      game: "Blox Fruits",
+      description: "The most complete Blox Fruits script with auto farm, auto buy, and more.",
+      code: "loadstring(game:HttpGet('https://raw.githubusercontent.com/pid4k/scripts/main/BloxFruits.lua'))()",
+      category: ["blox-fruits", "popular"],
+      features: [
+        "Auto farm all fruits",
+        "Auto buy abilities",
+        "Teleport to islands",
+        "Auto collect chests",
+        "Player ESP"
+      ],
+      lastUpdated: "2023-06-15"
+    },
+    {
+      id: 2,
+      title: "Grow Garden Pro",
+      game: "Grow a Garden",
+      description: "Advanced garden growing script with auto plant, harvest, and sell features.",
+      code: "loadstring(game:HttpGet('https://raw.githubusercontent.com/thatsepical/petspawner/refs/heads/main/growagarden.lua'))()",
+      category: ["garden", "new"],
+      features: [
+        "Auto plant seeds",
+        "Auto harvest plants",
+        "Auto sell items",
+        "Optimized pathfinding",
+        "Anti-afk system"
+      ],
+      lastUpdated: "2023-06-10"
+    },
+    {
+      id: 3,
+      title: "Emergency Hamburg VIP",
+      game: "Emergency Hamburg",
+      description: "Complete script for Emergency Hamburg with auto rob and money features.",
+      code: "loadstring(game:HttpGet('https://raw.githubusercontent.com/pid4k/scripts/main/BeanzHub.lua'))()",
+      category: ["emergency", "popular"],
+      features: [
+        "Auto rob all stores",
+        "Money drop bypass",
+        "Player teleport",
+        "Vehicle spawner",
+        "Police bypass"
+      ],
+      lastUpdated: "2023-06-12"
+    },
+    {
+      id: 4,
+      title: "Nexar Auto Rob",
+      game: "Emergency Hamburg",
+      description: "Specialized auto rob script for Emergency Hamburg with smart targeting.",
+      code: 'loadstring(game:HttpGet("https://techhub.group/scripts/nexarehautorob"))()',
+      category: ["emergency"],
+      features: [
+        "Smart store targeting",
+        "Police detection",
+        "Escape routes",
+        "Money bag optimization",
+        "Low detection risk"
+      ],
+      lastUpdated: "2023-06-05"
+    },
+    {
+      id: 5,
+      title: "Blox Fruits ESP",
+      game: "Blox Fruits",
+      description: "ESP and teleport script for Blox Fruits with player and fruit tracking.",
+      code: "loadstring(game:HttpGet('https://raw.githubusercontent.com/pid4k/scripts/main/BloxFruitsESP.lua'))()",
+      category: ["blox-fruits"],
+      features: [
+        "Player ESP",
+        "Fruit locations",
+        "Boss locations",
+        "Safe teleport",
+        "Customizable UI"
+      ],
+      lastUpdated: "2023-05-28"
+    },
+    {
+      id: 6,
+      title: "Garden Multi-Box",
+      game: "Grow a Garden",
+      description: "Advanced script for managing multiple gardens simultaneously.",
+      code: 'loadstring(game:HttpGet("https://raw.githubusercontent.com/NeroHubClub/NeroPET-SEEDspawner/refs/heads/main/v2.5"))()',
+      category: ["garden", "new"],
+      features: [
+        "Multi-garden support",
+        "Seed optimizer",
+        "Profit calculator",
+        "Auto-replant",
+        "Growth tracker"
+      ],
+      lastUpdated: "2023-06-18"
+    }
+  ];
 
-  function hideAll() {
-    scriptDetails.style.display = 'none';
-    emergencyOptions.style.display = 'none';
-    growOptions.style.display = 'none';
+  // DOM elements
+  const scriptsContainer = document.getElementById('scriptsContainer');
+  const searchInput = document.getElementById('searchInput');
+  const categoryBtns = document.querySelectorAll('.category-btn');
+  const scriptModal = document.getElementById('scriptModal');
+  const modalTitle = document.getElementById('modalTitle');
+  const modalFeatures = document.getElementById('modalFeatures');
+  const modalCode = document.getElementById('modalCode');
+  const modalCopyBtn = document.getElementById('modalCopyBtn');
+  const modalClose = document.getElementById('modalClose');
+  const totalScriptsEl = document.getElementById('totalScripts');
+  const activeUsersEl = document.getElementById('activeUsers');
+  const gamesSupportedEl = document.getElementById('gamesSupported');
+
+  // Stats animation
+  function animateStats() {
+    animateValue(totalScriptsEl, 0, scripts.length, 1000);
+    animateValue(activeUsersEl, 0, 1243, 1000);
+    animateValue(gamesSupportedEl, 0, 8, 1000);
   }
 
-  mainButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      if (btn.id === 'btnEmergencyHamburg') {
-        hideAll();
-        emergencyOptions.style.display = 'block';
-        emergencyOptions.scrollIntoView({behavior: 'smooth'});
-      } else if (btn.id === 'btnGrowGarden') {
-        hideAll();
-        growOptions.style.display = 'block';
-        growOptions.scrollIntoView({behavior: 'smooth'});
-      } else {
-        hideAll();
-        const name = btn.getAttribute('data-name');
-        const code = btn.getAttribute('data-code');
-        scriptTitle.textContent = name;
-        scriptCode.textContent = code;
-        scriptDetails.style.display = 'block';
-        copyBtn.textContent = 'Copy';
-        scriptDetails.scrollIntoView({behavior: 'smooth'});
+  function animateValue(el, start, end, duration) {
+    let startTimestamp = null;
+    const step = (timestamp) => {
+      if (!startTimestamp) startTimestamp = timestamp;
+      const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+      el.innerHTML = Math.floor(progress * (end - start) + start);
+      if (progress < 1) {
+        window.requestAnimationFrame(step);
+      }
+    };
+    window.requestAnimationFrame(step);
+  }
+
+  // Render script cards
+  function renderScripts(scriptsToRender) {
+    scriptsContainer.innerHTML = '';
+    
+    if (scriptsToRender.length === 0) {
+      scriptsContainer.innerHTML = '<p style="grid-column: 1/-1; text-align: center;">No scripts found matching your criteria.</p>';
+      return;
+    }
+    
+    scriptsToRender.forEach(script => {
+      const card = document.createElement('div');
+      card.className = 'script-card';
+      card.innerHTML = `
+        <div class="card-header">
+          <h3 class="card-title">${script.title}</h3>
+          <p class="card-game">${script.game}</p>
+        </div>
+        <div class="card-body">
+          <p class="card-description">${script.description}</p>
+        </div>
+        <div class="card-footer">
+          <span class="last-updated">Updated: ${script.lastUpdated}</span>
+          <button class="copy-btn" data-id="${script.id}">
+            <i class="fas fa-copy"></i> View Script
+          </button>
+        </div>
+      `;
+      scriptsContainer.appendChild(card);
+    });
+    
+    // Add event listeners to the new buttons
+    document.querySelectorAll('.copy-btn').forEach(btn => {
+      if (btn.id !== 'modalCopyBtn') {
+        btn.addEventListener('click', () => {
+          const scriptId = parseInt(btn.getAttribute('data-id'));
+          showScriptDetails(scriptId);
+        });
       }
     });
-  });
+  }
 
-  // خيارات Emergency Hamburg
-  emergencyOptions.querySelectorAll('button').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const name = btn.getAttribute('data-name');
-      const code = btn.getAttribute('data-code');
-      scriptTitle.textContent = name;
-      scriptCode.textContent = code;
-      scriptDetails.style.display = 'block';
-      copyBtn.textContent = 'Copy';
-      scriptDetails.scrollIntoView({behavior: 'smooth'});
+  // Show script details in modal
+  function showScriptDetails(scriptId) {
+    const script = scripts.find(s => s.id === scriptId);
+    if (!script) return;
+    
+    modalTitle.textContent = `${script.title} - ${script.game}`;
+    modalCode.textContent = script.code;
+    
+    // Clear and add features
+    modalFeatures.innerHTML = '';
+    script.features.forEach(feature => {
+      const li = document.createElement('li');
+      li.textContent = feature;
+      modalFeatures.appendChild(li);
     });
-  });
+    
+    // Reset copy button
+    modalCopyBtn.innerHTML = '<i class="fas fa-copy"></i> Copy Script';
+    modalCopyBtn.classList.remove('copied');
+    
+    // Show modal
+    scriptModal.classList.add('active');
+  }
 
-  // خيارات Grow a Garden
-  growOptions.querySelectorAll('button').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const name = btn.getAttribute('data-name');
-      const code = btn.getAttribute('data-code');
-      scriptTitle.textContent = name;
-      scriptCode.textContent = code;
-      scriptDetails.style.display = 'block';
-      copyBtn.textContent = 'Copy';
-      scriptDetails.scrollIntoView({behavior: 'smooth'});
+  // Filter scripts by category
+  function filterScripts(category) {
+    if (category === 'all') return scripts;
+    return scripts.filter(script => script.category.includes(category));
+  }
+
+  // Search scripts
+  function searchScripts(query) {
+    if (!query) return scripts;
+    const lowerQuery = query.toLowerCase();
+    return scripts.filter(script => 
+      script.title.toLowerCase().includes(lowerQuery) || 
+      script.game.toLowerCase().includes(lowerQuery) ||
+      script.description.toLowerCase().includes(lowerQuery)
+    );
+  }
+
+  // Initialize
+  function init() {
+    renderScripts(scripts);
+    animateStats();
+    
+    // Category filter
+    categoryBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        categoryBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const category = btn.getAttribute('data-category');
+        const filteredScripts = filterScripts(category);
+        renderScripts(filteredScripts);
+      });
     });
-  });
-
-  // زر النسخ
-  copyBtn.addEventListener('click', () => {
-    navigator.clipboard.writeText(scriptCode.textContent).then(() => {
-      copyBtn.textContent = 'Copied!';
-      setTimeout(() => copyBtn.textContent = 'Copy', 1500);
-    }).catch(() => {
-      alert('Failed to copy. Please copy manually.');
+    
+    // Search
+    searchInput.addEventListener('input', () => {
+      const query = searchInput.value.trim();
+      const searchedScripts = searchScripts(query);
+      renderScripts(searchedScripts);
     });
-  });
+    
+    // Modal copy button
+    modalCopyBtn.addEventListener('click', () => {
+      navigator.clipboard.writeText(modalCode.textContent).then(() => {
+        modalCopyBtn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+        modalCopyBtn.classList.add('copied');
+        setTimeout(() => {
+          modalCopyBtn.innerHTML = '<i class="fas fa-copy"></i> Copy Script';
+          modalCopyBtn.classList.remove('copied');
+        }, 2000);
+      }).catch(err => {
+        console.error('Failed to copy: ', err);
+      });
+    });
+    
+    // Modal close
+    modalClose.addEventListener('click', () => {
+      scriptModal.classList.remove('active');
+    });
+    
+    // Close modal when clicking outside
+    scriptModal.addEventListener('click', (e) => {
+      if (e.target === scriptModal) {
+        scriptModal.classList.remove('active');
+      }
+    });
+  }
 
-  // بداية الصفحة: اخفي كل شيء
-  hideAll();
+  // Start the app
+  init();
 </script>
 
 </body>
