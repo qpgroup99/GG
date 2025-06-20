@@ -1835,6 +1835,24 @@
         }, 2000);
       }).catch(err => {
         console.error('Failed to copy: ', err);
+        // Fallback for browsers that don't support clipboard API
+        const textarea = document.createElement('textarea');
+        textarea.value = modalCode.textContent;
+        document.body.appendChild(textarea);
+        textarea.select();
+        try {
+          document.execCommand('copy');
+          modalCopyBtn.innerHTML = '<i class="fas fa-check"></i> Spell Copied!';
+          modalCopyBtn.classList.add('copied');
+          setTimeout(() => {
+            modalCopyBtn.innerHTML = '<i class="fas fa-copy"></i> Copy Spell';
+            modalCopyBtn.classList.remove('copied');
+          }, 2000);
+        } catch (err) {
+          console.error('Fallback copy failed: ', err);
+          alert('Failed to copy script. Please copy manually.');
+        }
+        document.body.removeChild(textarea);
       });
     });
     
@@ -1852,10 +1870,17 @@
         scriptModal.classList.remove('active');
       }
     });
+    
+    // Add keyboard event for closing modal with ESC
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && scriptModal.classList.contains('active')) {
+        scriptModal.classList.remove('active');
+      }
+    });
   }
 
-  // Start the app
-  init();
+  // Start the app when DOM is fully loaded
+  document.addEventListener('DOMContentLoaded', init);
 </script>
 
 </body>
