@@ -3,12 +3,13 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>RBLX Magic Script Hub</title>
+<title>3Q Group Script Hub</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap');
   
   :root {
     --primary: #FF6EC7;
@@ -38,6 +39,15 @@
     position: relative;
   }
   
+  body.arabic {
+    font-family: 'Tajawal', sans-serif;
+    direction: rtl;
+  }
+  
+  body.arabic .container {
+    direction: rtl;
+  }
+  
   body::before {
     content: "";
     position: fixed;
@@ -62,9 +72,36 @@
     animation: float 15s infinite ease-in-out;
   }
   
+  .floating-logo {
+    position: absolute;
+    width: 150px;
+    height: 150px;
+    background-image: url('https://via.placeholder.com/150/1E1035/FFFFFF?text=3Q+Group');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    opacity: 0.2;
+    z-index: -1;
+    animation: float-logo 25s infinite linear;
+  }
+  
   @keyframes float {
     0%, 100% { transform: translateY(0) translateX(0); }
     50% { transform: translateY(-20px) translateX(10px); }
+  }
+  
+  @keyframes float-logo {
+    0% { transform: translate(0, 0) rotate(0deg); }
+    25% { transform: translate(50vw, -20vh) rotate(90deg); }
+    50% { transform: translate(80vw, 20vh) rotate(180deg); }
+    75% { transform: translate(30vw, 50vh) rotate(270deg); }
+    100% { transform: translate(0, 0) rotate(360deg); }
+  }
+  
+  @keyframes glow {
+    0% { text-shadow: 0 0 10px rgba(255, 110, 199, 0.8); }
+    50% { text-shadow: 0 0 20px rgba(110, 226, 255, 0.8), 0 0 30px rgba(255, 230, 110, 0.6); }
+    100% { text-shadow: 0 0 10px rgba(255, 110, 199, 0.8); }
   }
   
   header {
@@ -105,6 +142,7 @@
     text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
     font-weight: 800;
     letter-spacing: 1px;
+    animation: glow 2s infinite ease-in-out;
   }
   
   .subtitle {
@@ -112,6 +150,30 @@
     font-size: 1.3rem;
     text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
     font-weight: 300;
+  }
+  
+  .language-switcher {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 100;
+  }
+  
+  .language-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(5px);
+  }
+  
+  .language-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
   }
   
   .search-container {
@@ -148,6 +210,11 @@
     transform: translateY(-50%);
     color: var(--text-secondary);
     font-size: 1.2rem;
+  }
+  
+  body.arabic .search-icon {
+    left: auto;
+    right: 1.5rem;
   }
   
   .search-wrapper {
@@ -558,6 +625,13 @@
     color: var(--secondary);
   }
   
+  body.arabic .features-list li::before {
+    left: auto;
+    right: 0;
+    padding-left: 0;
+    padding-right: 1.5rem;
+  }
+  
   .modal-actions {
     display: flex;
     gap: 1rem;
@@ -671,6 +745,15 @@
     .stat-item {
       min-width: 150px;
     }
+    
+    .language-switcher {
+      position: relative;
+      top: auto;
+      right: auto;
+      margin-bottom: 1rem;
+      display: flex;
+      justify-content: center;
+    }
   }
 </style>
 </head>
@@ -681,16 +764,26 @@
 <div class="floating-orb" style="width: 200px; height: 200px; background: radial-gradient(circle, rgba(110,226,255,0.3), transparent 70%); bottom: -50px; right: -50px; animation-delay: 2s;"></div>
 <div class="floating-orb" style="width: 150px; height: 150px; background: radial-gradient(circle, rgba(255,230,110,0.3), transparent 70%); top: 30%; right: 10%; animation-delay: 4s;"></div>
 
+<!-- 3Q Group Floating Logo -->
+<div class="floating-logo"></div>
+
 <!-- Random floating objects -->
 <div class="floating-object" style="top: 20%; left: 10%; animation-delay: 0s; width: 20px; height: 20px;"></div>
 <div class="floating-object" style="top: 70%; left: 80%; animation-delay: 3s; width: 30px; height: 30px;"></div>
 <div class="floating-object" style="top: 40%; left: 60%; animation-delay: 6s; width: 25px; height: 25px;"></div>
 <div class="floating-object" style="top: 60%; left: 20%; animation-delay: 9s; width: 15px; height: 15px;"></div>
 
+<!-- Language Switcher -->
+<div class="language-switcher">
+  <button class="language-btn" id="languageToggle">
+    <i class="fas fa-language"></i> العربية
+  </button>
+</div>
+
 <header>
   <div class="container">
-    <h1>RBLX Magic Script Hub</h1>
-    <p class="subtitle">Where imagination meets automation in the Roblox universe</p>
+    <h1>3Q Group Script Hub</h1>
+    <p class="subtitle">Premium scripts for your gaming experience</p>
   </div>
 </header>
 
@@ -698,7 +791,7 @@
   <div class="search-container">
     <div class="search-wrapper">
       <i class="fas fa-search search-icon"></i>
-      <input type="text" id="searchInput" placeholder="Search magical scripts...">
+      <input type="text" id="searchInput" placeholder="Search scripts...">
     </div>
   </div>
   
@@ -738,18 +831,18 @@
       <button class="modal-close" id="modalClose">&times;</button>
     </div>
     <div class="modal-body">
-      <h3>Magical Features:</h3>
+      <h3>Features:</h3>
       <ul class="features-list" id="modalFeatures">
         <!-- Features will be inserted here -->
       </ul>
-      <h3>Enchanted Script Code:</h3>
+      <h3>Script Code:</h3>
       <div class="script-code" id="modalCode"></div>
       <div class="modal-actions">
         <button class="copy-btn" id="modalCopyBtn">
-          <i class="fas fa-copy"></i> Copy Spell
+          <i class="fas fa-copy"></i> Copy Script
         </button>
         <button class="download-btn" id="modalDownloadBtn">
-          <i class="fas fa-file-archive"></i> Download Scroll
+          <i class="fas fa-file-archive"></i> Download Script
         </button>
       </div>
     </div>
@@ -757,8 +850,8 @@
 </div>
 
 <footer class="footer">
-  <p>© 3Q Group </p>
-  <p>Contact:mohmadragheb90@gmail.com </p>
+  <p>© 2023 3Q Group | All scripts are provided as-is</p>
+  <p>Contact: mohmadragheb90@gmail.com</p>
 </footer>
 
 <script>
@@ -766,101 +859,137 @@
   const scripts = [
     {
       id: 1,
-      title: "Blox Fruits Enchantment",
+      title: "Blox Fruits Script",
       game: "Blox Fruits",
-      description: "The most powerful Blox Fruits script with auto farm, teleportation, and mystical ESP abilities.",
+      description: "The most powerful Blox Fruits script with auto farm, teleportation, and ESP abilities.",
       code: "loadstring(game:HttpGet('https://raw.githubusercontent.com/pid4k/scripts/main/BloxFruits.lua'))()",
       category: ["blox-fruits", "popular"],
       features: [
-        "Auto farm all mystical fruits",
-        "Teleport between enchanted islands",
-        "See hidden players with wizard ESP",
-        "Auto collect magical chests",
-        "Summon abilities instantly"
+        "Auto farm all fruits",
+        "Teleport between islands",
+        "Player ESP",
+        "Auto collect chests",
+        "Instant abilities"
       ],
       lastUpdated: "2023-06-15"
     },
     {
       id: 2,
-      title: "Garden Alchemy Pro",
+      title: "Garden Pro Script",
       game: "Grow a Garden",
-      description: "Magical garden growing script that transforms seeds into gold with alchemical precision.",
+      description: "Advanced garden growing script that optimizes seed planting and harvesting.",
       code: "loadstring(game:HttpGet('https://raw.githubusercontent.com/thatsepical/petspawner/refs/heads/main/growagarden.lua'))()",
       category: ["garden", "new"],
       features: [
-        "Auto-plant enchanted seeds",
-        "Harvest with fairy helpers",
-        "Alchemical selling system",
-        "Magical pathfinding",
-        "Potion-based anti-afk"
+        "Auto-plant seeds",
+        "Smart harvesting",
+        "Auto-selling system",
+        "Efficient pathfinding",
+        "Anti-afk system"
       ],
       lastUpdated: "2023-06-10"
     },
     {
       id: 3,
-      title: "Hamburg Sorcery VIP",
+      title: "Hamburg VIP Script",
       game: "Emergency Hamburg",
-      description: "Arcane script for Emergency Hamburg with invisibility spells and money conjuring.",
+      description: "Premium script for Emergency Hamburg with stealth features and money automation.",
       code: "loadstring(game:HttpGet('https://raw.githubusercontent.com/pid4k/scripts/main/BeanzHub.lua'))()",
       category: ["emergency", "popular"],
       features: [
-        "Invisibility cloak for robbing",
-        "Money duplication spells",
-        "Teleportation between locations",
-        "Summon magical vehicles",
-        "Police confusion hex"
+        "Stealth mode for robbing",
+        "Auto-money collection",
+        "Location teleportation",
+        "Vehicle spawner",
+        "Police avoidance"
       ],
       lastUpdated: "2023-06-12"
     },
     {
       id: 4,
-      title: "Nexar Wizardry",
+      title: "Nexar Script",
       game: "Emergency Hamburg",
-      description: "Sorcerer-approved auto rob script with crystal ball targeting system.",
+      description: "Advanced auto rob script with targeting system.",
       code: 'loadstring(game:HttpGet("https://techhub.group/scripts/nexarehautorob"))()',
       category: ["emergency"],
       features: [
-        "Crystal ball store targeting",
-        "Wizard ESP for police",
-        "Magical escape portals",
-        "Bag of holding optimization",
-        "Low detection spells"
+        "Smart store targeting",
+        "Police ESP",
+        "Quick escape system",
+        "Inventory optimization",
+        "Low detection rate"
       ],
       lastUpdated: "2023-06-05"
     },
     {
       id: 5,
-      title: "Blox Fruits Clairvoyance",
+      title: "Blox Fruits ESP",
       game: "Blox Fruits",
-      description: "See the unseen with this mystical ESP and teleportation script for Blox Fruits.",
+      description: "Advanced ESP and teleportation script for Blox Fruits.",
       code: "loadstring(game:HttpGet('https://raw.githubusercontent.com/pid4k/scripts/main/BloxFruitsESP.lua'))()",
       category: ["blox-fruits"],
       features: [
-        "Third eye player ESP",
-        "Fruit divination",
-        "Boss tracking spells",
-        "Safe teleportation circles",
-        "Customizable spellbook UI"
+        "Player ESP",
+        "Fruit locations",
+        "Boss tracking",
+        "Safe teleportation",
+        "Customizable UI"
       ],
       lastUpdated: "2023-05-28"
     },
     {
       id: 6,
-      title: "Garden Multi-Dimension",
+      title: "Garden Multi-Script",
       game: "Grow a Garden",
-      description: "Manage gardens across multiple dimensions with this powerful script.",
+      description: "Manage multiple gardens with this powerful script.",
       code: 'loadstring(game:HttpGet("https://raw.githubusercontent.com/NeroHubClub/NeroPET-SEEDspawner/refs/heads/main/v2.5"))()',
       category: ["garden", "new"],
       features: [
-        "Parallel garden management",
-        "Seed enchantment optimizer",
-        "Dimensional profit calculator",
-        "Auto-replanting spell",
-        "Growth prediction magic"
+        "Multi-garden management",
+        "Seed optimizer",
+        "Profit calculator",
+        "Auto-replanting",
+        "Growth tracking"
       ],
       lastUpdated: "2023-06-18"
     }
   ];
+
+  // Arabic translations
+  const arabicTranslations = {
+    title: "مركز سكربتات 3Q جروب",
+    subtitle: "سكربتات مميزة لتجربة لعب أفضل",
+    searchPlaceholder: "ابحث عن سكربتات...",
+    categories: {
+      all: "كل السكربتات",
+      "blox-fruits": "بلاكس فروتس",
+      garden: "جرو أ جاردن",
+      emergency: "إيمرجنسي هامبورج",
+      popular: "الأكثر شهرة",
+      new: "مضاف حديثاً"
+    },
+    stats: {
+      totalScripts: "عدد السكربتات",
+      dailyUsers: "المستخدمين اليوميين",
+      gamesSupported: "الألعاب المدعومة"
+    },
+    scriptCard: {
+      viewScript: "عرض السكربت",
+      updated: "تم التحديث:"
+    },
+    modal: {
+      title: "تفاصيل السكربت",
+      features: "المميزات:",
+      scriptCode: "كود السكربت:",
+      copyScript: "نسخ السكربت",
+      downloadScript: "تحميل السكربت"
+    },
+    footer: {
+      copyright: "© 2023 3Q جروب | جميع السكربتات مقدمة كما هي",
+      contact: "للتواصل: mohmadragheb90@gmail.com"
+    },
+    languageToggle: "English"
+  };
 
   // DOM elements
   const scriptsContainer = document.getElementById('scriptsContainer');
@@ -876,9 +1005,14 @@
   const totalScriptsEl = document.getElementById('totalScripts');
   const activeUsersEl = document.getElementById('activeUsers');
   const gamesSupportedEl = document.getElementById('gamesSupported');
+  const languageToggle = document.getElementById('languageToggle');
+  const titleElement = document.querySelector('h1');
+  const subtitleElement = document.querySelector('.subtitle');
+  const footerElements = document.querySelectorAll('.footer p');
 
   // Current script being viewed in modal
   let currentScript = null;
+  let isArabic = false;
 
   // Create more floating objects dynamically
   function createFloatingObjects() {
@@ -935,7 +1069,8 @@
     scriptsContainer.innerHTML = '';
     
     if (scriptsToRender.length === 0) {
-      scriptsContainer.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--text-secondary);">No magical spells found matching your criteria.</p>';
+      scriptsContainer.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--text-secondary);">' + 
+        (isArabic ? 'لا توجد سكربتات تطابق بحثك' : 'No scripts found matching your criteria') + '</p>';
       return;
     }
     
@@ -951,10 +1086,10 @@
           <p class="card-description">${script.description}</p>
         </div>
         <div class="card-footer">
-          <span class="last-updated">Updated: ${script.lastUpdated}</span>
+          <span class="last-updated">${isArabic ? arabicTranslations.scriptCard.updated : 'Updated:'} ${script.lastUpdated}</span>
           <div class="card-actions">
             <button class="copy-btn" data-id="${script.id}">
-              <i class="fas fa-scroll"></i> View Spell
+              <i class="fas fa-scroll"></i> ${isArabic ? arabicTranslations.scriptCard.viewScript : 'View Script'}
             </button>
           </div>
         </div>
@@ -991,7 +1126,7 @@
     });
     
     // Reset buttons
-    modalCopyBtn.innerHTML = '<i class="fas fa-copy"></i> Copy Spell';
+    modalCopyBtn.innerHTML = `<i class="fas fa-copy"></i> ${isArabic ? arabicTranslations.modal.copyScript : 'Copy Script'}`;
     modalCopyBtn.classList.remove('copied');
     
     // Show modal
@@ -1008,29 +1143,29 @@
     // Add script to ZIP
     zip.file(fileName, currentScript.code);
     
-    // Add a magical README file
+    // Add a README file
     const readmeContent = `
-      ✨ ${currentScript.title} ✨
-      =================${'='.repeat(currentScript.title.length)}
+      ${currentScript.title}
+      ${'='.repeat(currentScript.title.length)}
       
-      🏰 Game: ${currentScript.game}
-      📅 Last Updated: ${currentScript.lastUpdated}
+      Game: ${currentScript.game}
+      Last Updated: ${currentScript.lastUpdated}
       
-      🔮 Features:
+      Features:
       ${currentScript.features.map(f => `★ ${f}`).join('\n')}
       
-      📜 Instructions:
-      1. Copy the magical incantation from ${fileName}
-      2. Paste into your preferred spellbook (executor)
-      3. Cast the spell (execute) and watch the magic happen!
+      Instructions:
+      1. Copy the script from ${fileName}
+      2. Paste into your preferred executor
+      3. Execute and enjoy!
       
-      ⚠️ Warning: Use responsibly, great power comes with great responsibility!
+      Warning: Use responsibly!
     `;
     zip.file("README.md", readmeContent);
     
     // Generate the ZIP file
     zip.generateAsync({type: "blob"}).then(function(content) {
-      saveAs(content, `${currentScript.title.replace(/\s+/g, '_')}_Spellbook.zip`);
+      saveAs(content, `${currentScript.title.replace(/\s+/g, '_')}_Script.zip`);
     });
   }
 
@@ -1049,6 +1184,82 @@
       script.game.toLowerCase().includes(lowerQuery) ||
       script.description.toLowerCase().includes(lowerQuery)
     );
+  }
+
+  // Toggle language
+  function toggleLanguage() {
+    isArabic = !isArabic;
+    document.body.classList.toggle('arabic', isArabic);
+    
+    // Update UI elements
+    if (isArabic) {
+      // Switch to Arabic
+      titleElement.textContent = arabicTranslations.title;
+      subtitleElement.textContent = arabicTranslations.subtitle;
+      searchInput.placeholder = arabicTranslations.searchPlaceholder;
+      languageToggle.innerHTML = '<i class="fas fa-language"></i> ' + arabicTranslations.languageToggle;
+      
+      // Update category buttons
+      categoryBtns.forEach(btn => {
+        const category = btn.getAttribute('data-category');
+        btn.textContent = arabicTranslations.categories[category] || btn.textContent;
+      });
+      
+      // Update stats labels
+      document.querySelectorAll('.stat-label').forEach((el, index) => {
+        if (index === 0) el.textContent = arabicTranslations.stats.totalScripts;
+        else if (index === 1) el.textContent = arabicTranslations.stats.dailyUsers;
+        else if (index === 2) el.textContent = arabicTranslations.stats.gamesSupported;
+      });
+      
+      // Update modal
+      if (scriptModal.classList.contains('active') && currentScript) {
+        showScriptDetails(currentScript.id);
+      }
+      
+      // Update footer
+      footerElements[0].textContent = arabicTranslations.footer.copyright;
+      footerElements[1].textContent = arabicTranslations.footer.contact;
+    } else {
+      // Switch to English
+      titleElement.textContent = "3Q Group Script Hub";
+      subtitleElement.textContent = "Premium scripts for your gaming experience";
+      searchInput.placeholder = "Search scripts...";
+      languageToggle.innerHTML = '<i class="fas fa-language"></i> العربية';
+      
+      // Update category buttons
+      categoryBtns.forEach(btn => {
+        const category = btn.getAttribute('data-category');
+        btn.textContent = category === 'all' ? 'All Scripts' : 
+                         category === 'blox-fruits' ? 'Blox Fruits' :
+                         category === 'garden' ? 'Grow a Garden' :
+                         category === 'emergency' ? 'Emergency Hamburg' :
+                         category === 'popular' ? 'Most Popular' : 'Recently Added';
+      });
+      
+      // Update stats labels
+      document.querySelectorAll('.stat-label').forEach((el, index) => {
+        if (index === 0) el.textContent = "Total Scripts";
+        else if (index === 1) el.textContent = "Daily Users";
+        else if (index === 2) el.textContent = "Games Supported";
+      });
+      
+      // Update modal
+      if (scriptModal.classList.contains('active') && currentScript) {
+        showScriptDetails(currentScript.id);
+      }
+      
+      // Update footer
+      footerElements[0].textContent = "© 2023 3Q Group | All scripts are provided as-is";
+      footerElements[1].textContent = "Contact: mohmadragheb90@gmail.com";
+    }
+    
+    // Re-render scripts to update button texts
+    const activeCategory = document.querySelector('.category-btn.active').getAttribute('data-category');
+    const filteredScripts = filterScripts(activeCategory);
+    const searchedScripts = searchScripts(searchInput.value.trim());
+    const scriptsToRender = filteredScripts.filter(script => searchedScripts.includes(script));
+    renderScripts(scriptsToRender);
   }
 
   // Initialize
@@ -1072,16 +1283,19 @@
     searchInput.addEventListener('input', () => {
       const query = searchInput.value.trim();
       const searchedScripts = searchScripts(query);
-      renderScripts(searchedScripts);
+      const activeCategory = document.querySelector('.category-btn.active').getAttribute('data-category');
+      const filteredScripts = filterScripts(activeCategory);
+      const scriptsToRender = filteredScripts.filter(script => searchedScripts.includes(script));
+      renderScripts(scriptsToRender);
     });
     
     // Modal copy button
     modalCopyBtn.addEventListener('click', () => {
       navigator.clipboard.writeText(modalCode.textContent).then(() => {
-        modalCopyBtn.innerHTML = '<i class="fas fa-check"></i> Spell Copied!';
+        modalCopyBtn.innerHTML = `<i class="fas fa-check"></i> ${isArabic ? 'تم النسخ!' : 'Copied!'}`;
         modalCopyBtn.classList.add('copied');
         setTimeout(() => {
-          modalCopyBtn.innerHTML = '<i class="fas fa-copy"></i> Copy Spell';
+          modalCopyBtn.innerHTML = `<i class="fas fa-copy"></i> ${isArabic ? arabicTranslations.modal.copyScript : 'Copy Script'}`;
           modalCopyBtn.classList.remove('copied');
         }, 2000);
       }).catch(err => {
@@ -1103,6 +1317,9 @@
         scriptModal.classList.remove('active');
       }
     });
+    
+    // Language toggle
+    languageToggle.addEventListener('click', toggleLanguage);
   }
 
   // Start the app
